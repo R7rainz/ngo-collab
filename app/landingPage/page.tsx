@@ -6,6 +6,27 @@ import { motion, AnimatePresence } from "framer-motion";
 
 // --- Mock Data for the Interactive Map ---
 const stateData: Record<string, any> = {
+  // New/Split Territories
+  "Ladakh": {
+    schools: "110",
+    literacy: "74.3%",
+    poverty: "11%",
+    activeNGOs: 15,
+  },
+  "Andaman & Nicobar": {
+    schools: "320",
+    literacy: "86.3%",
+    poverty: "1%",
+    activeNGOs: 12,
+  },
+  "Lakshadweep": {
+    schools: "45",
+    literacy: "91.8%",
+    poverty: "2%",
+    activeNGOs: 5,
+  },
+
+  // Existing States
   "Jammu & Kashmir": {
     schools: "450",
     literacy: "68.7%",
@@ -288,15 +309,15 @@ export default function LandingPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="flex-1 relative order-1 lg:order-2"
+              className="flex-1 relative order-1 lg:order-2 w-full"
             >
-              <div className="relative w-full max-w-[600px] mx-auto group">
+              <div className="relative w-full max-w-[650px] mx-auto group">
                 <IndiaMap
                   hoveredState={hoveredState}
                   setHoveredState={setHoveredState}
                 />
                 {/* Compass Decoration */}
-                <div className="absolute bottom-4 right-4 text-white/10 uppercase text-[10px] tracking-[0.5em] flex flex-col items-center">
+                <div className="absolute bottom-4 right-4 text-white/10 uppercase text-[10px] tracking-[0.5em] flex flex-col items-center pointer-events-none">
                   <span>N</span>
                   <div className="w-px h-10 bg-white/10 my-2" />
                   <span>S</span>
@@ -310,6 +331,56 @@ export default function LandingPage() {
   );
 }
 
+// --- Simplified & Geographically Accurate Data ---
+const MAP_DATA = [
+  // NORTH
+  { id: "LD", name: "Ladakh", color: "#FF9933", d: "M368 62 L395 75 L420 80 L445 120 L440 145 L415 150 L385 140 L350 120 L335 85 Z" },
+  { id: "JK", name: "Jammu & Kashmir", color: "#FF9933", d: "M320 65 L368 62 L335 85 L350 120 L325 135 L300 120 L290 90 Z" },
+  { id: "HP", name: "Himachal Pradesh", color: "#FFFFFF", d: "M325 135 L350 120 L360 145 L340 170 L315 160 Z" },
+  { id: "PB", name: "Punjab", color: "#138808", d: "M290 140 L315 160 L310 185 L280 180 L260 160 Z" },
+  { id: "UT", name: "Uttarakhand", color: "#FF9933", d: "M340 170 L360 145 L390 155 L380 190 L335 185 Z" },
+  { id: "HR", name: "Haryana", color: "#FFFFFF", d: "M280 180 L310 185 L315 205 L290 220 L270 200 Z" },
+  { id: "DL", name: "Delhi", color: "#000088", d: "M305 200 L315 200 L315 210 L305 210 Z" },
+
+  // WEST
+  { id: "RJ", name: "Rajasthan", color: "#FF9933", d: "M260 160 L280 180 L270 200 L290 220 L285 260 L240 290 L180 260 L160 220 L200 180 Z" },
+  { id: "GJ", name: "Gujarat", color: "#FFFFFF", d: "M160 280 L240 290 L245 340 L210 360 L180 340 L160 350 L130 320 L160 310 L140 290 Z" },
+
+  // CENTRAL
+  { id: "UP", name: "Uttar Pradesh", color: "#138808", d: "M315 205 L335 185 L380 190 L420 230 L400 260 L350 265 L320 240 Z" },
+  { id: "MP", name: "Madhya Pradesh", color: "#FFFFFF", d: "M285 260 L320 240 L350 265 L360 310 L330 350 L270 340 L245 340 L240 290 Z" },
+  { id: "CG", name: "Chhattisgarh", color: "#138808", d: "M360 310 L410 300 L420 340 L380 380 L360 370 L330 350 Z" },
+
+  // EAST
+  { id: "BR", name: "Bihar", color: "#FF9933", d: "M400 260 L445 260 L455 290 L410 300 L350 265 Z" },
+  { id: "JH", name: "Jharkhand", color: "#FFFFFF", d: "M410 300 L455 290 L440 330 L410 340 L360 310 Z" },
+  { id: "WB", name: "West Bengal", color: "#138808", d: "M445 260 L465 240 L480 280 L460 350 L440 330 L455 290 Z" },
+  { id: "OR", name: "Odisha", color: "#FF9933", d: "M410 340 L440 330 L460 350 L430 400 L380 380 L420 340 Z" },
+
+  // NORTHEAST
+  { id: "SK", name: "Sikkim", color: "#FF9933", d: "M465 240 L485 240 L480 255 L465 250 Z" },
+  { id: "AR", name: "Arunachal Pradesh", color: "#FFFFFF", d: "M510 235 L560 250 L540 280 L500 260 Z" },
+  { id: "AS", name: "Assam", color: "#138808", d: "M480 255 L510 235 L500 260 L540 280 L520 300 L480 280 Z" },
+  { id: "ML", name: "Meghalaya", color: "#FFFFFF", d: "M480 280 L520 300 L500 310 L480 290 Z" },
+  { id: "NL", name: "Nagaland", color: "#FF9933", d: "M540 280 L560 285 L550 310 L520 300 Z" },
+  { id: "MN", name: "Manipur", color: "#FFFFFF", d: "M520 300 L550 310 L540 340 L520 330 Z" },
+  { id: "MZ", name: "Mizoram", color: "#138808", d: "M520 330 L540 340 L530 380 L510 360 Z" },
+  { id: "TR", name: "Tripura", color: "#FF9933", d: "M500 310 L520 330 L510 350 L490 330 Z" },
+
+  // SOUTH
+  { id: "MH", name: "Maharashtra", color: "#FF9933", d: "M210 360 L245 340 L270 340 L330 350 L360 370 L340 430 L280 450 L230 430 Z" },
+  { id: "TG", name: "Telangana", color: "#FFFFFF", d: "M340 430 L360 370 L400 390 L410 440 L360 460 Z" },
+  { id: "AP", name: "Andhra Pradesh", color: "#138808", d: "M360 460 L410 440 L400 390 L380 380 L430 400 L400 500 L360 520 L330 490 Z" },
+  { id: "KA", name: "Karnataka", color: "#FFFFFF", d: "M230 430 L280 450 L340 430 L360 460 L330 490 L310 560 L260 540 Z" },
+  { id: "GA", name: "Goa", color: "#138808", d: "M260 540 L270 530 L280 545 L265 550 Z" },
+  { id: "KL", name: "Kerala", color: "#FF9933", d: "M280 570 L310 560 L320 620 L290 640 Z" },
+  { id: "TN", name: "Tamil Nadu", color: "#FFFFFF", d: "M310 560 L330 490 L360 520 L350 580 L320 620 Z" },
+
+  // ISLANDS
+  { id: "AN", name: "Andaman & Nicobar", color: "#138808", d: "M550 500 L560 500 L560 530 L550 530 Z M555 540 L565 540 L565 560 L555 560 Z" },
+  { id: "LK", name: "Lakshadweep", color: "#FF9933", d: "M180 580 L190 580 L190 590 L180 590 Z M195 600 L205 600 L205 610 L195 610 Z" }
+];
+
 // --- India Map Component with Proper State Boundaries ---
 function IndiaMap({
   hoveredState,
@@ -318,289 +389,104 @@ function IndiaMap({
   hoveredState: string | null;
   setHoveredState: (state: string | null) => void;
 }) {
-  // More accurate India state paths with proper positioning
-  const states = [
-    // Northern States
-    {
-      name: "Jammu & Kashmir",
-      d: "M168,25 Q175,15 195,12 Q220,10 240,18 Q255,25 260,40 Q262,55 255,70 L240,80 Q225,85 210,82 L190,75 Q175,70 168,55 Q165,40 168,25 Z",
-      color: "#FF9933",
-    },
-    {
-      name: "Himachal Pradesh",
-      d: "M210,82 L225,85 L240,80 L250,95 Q248,108 238,115 L220,112 L208,105 Q205,95 210,82 Z",
-      color: "#FFFFFF",
-    },
-    {
-      name: "Punjab",
-      d: "M175,95 L190,90 L208,105 L220,112 L215,128 L198,135 L180,130 Q172,118 175,95 Z",
-      color: "#138808",
-    },
-    {
-      name: "Uttarakhand",
-      d: "M238,115 Q250,112 265,108 L280,120 Q282,135 272,148 L255,145 L240,138 Q235,125 238,115 Z",
-      color: "#FF9933",
-    },
-    {
-      name: "Haryana",
-      d: "M180,130 L198,135 L215,128 L220,145 L210,162 L190,165 L178,155 Q175,142 180,130 Z",
-      color: "#FFFFFF",
-    },
-    {
-      name: "Delhi",
-      d: "M198,155 L208,152 L212,162 L205,170 L195,168 Z",
-      color: "#FF9933",
-    },
-    // Western States
-    {
-      name: "Rajasthan",
-      d: "M95,145 L130,138 L165,142 L178,155 L190,165 L195,195 Q190,225 175,248 L140,268 Q110,265 85,245 Q70,220 72,190 Q75,160 95,145 Z",
-      color: "#138808",
-    },
-    {
-      name: "Gujarat",
-      d: "M50,245 L85,245 Q110,265 115,285 L105,315 Q95,340 75,355 L55,350 Q30,335 25,310 Q22,280 30,260 Q40,248 50,245 Z",
-      color: "#FF9933",
-    },
-    // Central States  
-    {
-      name: "Uttar Pradesh",
-      d: "M195,165 L210,162 L240,138 L272,148 Q295,155 315,165 L330,185 Q335,205 325,225 L295,235 L260,230 L225,225 L200,215 Q192,195 195,165 Z",
-      color: "#FFFFFF",
-    },
-    {
-      name: "Madhya Pradesh",
-      d: "M115,285 L140,268 L175,248 Q190,240 200,245 L225,250 L260,255 L280,265 Q290,285 285,310 L265,335 L235,345 L195,340 L160,330 L130,315 Q118,300 115,285 Z",
-      color: "#138808",
-    },
-    {
-      name: "Chhattisgarh",
-      d: "M280,265 L305,258 L325,275 Q335,295 330,320 L310,345 L285,355 L265,345 L265,335 Q275,310 280,265 Z",
-      color: "#FF9933",
-    },
-    // Eastern States
-    {
-      name: "Bihar",
-      d: "M325,225 L355,218 Q375,225 385,240 L380,265 L355,275 L330,270 L320,250 Z",
-      color: "#FFFFFF",
-    },
-    {
-      name: "Jharkhand",
-      d: "M305,258 L330,270 L355,275 L360,300 L340,320 L310,325 L295,310 Q300,280 305,258 Z",
-      color: "#138808",
-    },
-    {
-      name: "West Bengal",
-      d: "M355,275 L380,265 Q395,275 405,295 L400,325 Q395,355 385,375 L365,385 L350,365 L345,335 L340,320 L360,300 Z",
-      color: "#FF9933",
-    },
-    {
-      name: "Odisha",
-      d: "M295,310 L340,320 L345,335 L350,365 L340,395 Q315,405 290,400 L265,380 L260,355 L265,345 L285,355 L310,345 Z",
-      color: "#FFFFFF",
-    },
-    // Northeast States
-    {
-      name: "Sikkim",
-      d: "M385,210 L398,205 Q405,215 402,228 L390,235 L382,225 Z",
-      color: "#138808",
-    },
-    {
-      name: "Arunachal Pradesh",
-      d: "M420,175 L455,165 Q475,175 485,195 L478,215 L450,225 L425,220 L415,200 Z",
-      color: "#FF9933",
-    },
-    {
-      name: "Assam",
-      d: "M390,235 L402,228 L415,235 L425,245 L455,240 L465,255 L455,270 L430,275 L415,285 L395,280 L380,265 Q382,248 390,235 Z",
-      color: "#FFFFFF",
-    },
-    {
-      name: "Nagaland",
-      d: "M465,255 L480,250 Q488,265 485,280 L472,290 L460,282 L455,270 Z",
-      color: "#138808",
-    },
-    {
-      name: "Manipur",
-      d: "M460,282 L472,290 L475,310 L465,325 L450,320 L448,300 Z",
-      color: "#FF9933",
-    },
-    {
-      name: "Mizoram",
-      d: "M448,320 L465,325 L470,345 Q465,365 455,375 L440,370 L435,350 Z",
-      color: "#FFFFFF",
-    },
-    {
-      name: "Tripura",
-      d: "M420,310 L435,305 L440,325 L432,340 L418,335 Z",
-      color: "#138808",
-    },
-    {
-      name: "Meghalaya",
-      d: "M395,280 L415,285 L430,295 L420,310 L400,305 L388,295 Z",
-      color: "#FF9933",
-    },
-    // Southern States
-    {
-      name: "Maharashtra",
-      d: "M75,355 L105,340 L130,345 L160,355 L195,365 L225,375 Q240,395 235,420 L210,440 L175,448 L140,442 L105,425 Q85,405 80,380 Z",
-      color: "#FFFFFF",
-    },
-    {
-      name: "Goa",
-      d: "M102,450 L115,445 L120,460 L110,472 L98,468 Z",
-      color: "#138808",
-    },
-    {
-      name: "Karnataka",
-      d: "M98,468 L140,442 L175,448 L195,465 Q200,495 190,525 L165,545 L130,548 Q105,535 95,510 L92,485 Z",
-      color: "#FF9933",
-    },
-    {
-      name: "Kerala",
-      d: "M105,545 L130,548 L140,575 Q135,605 125,625 L108,620 Q98,595 100,570 Z",
-      color: "#FFFFFF",
-    },
-    {
-      name: "Tamil Nadu",
-      d: "M130,548 L165,545 L195,560 Q210,590 205,620 L185,645 L155,650 L130,635 L125,625 L140,600 L140,575 Z",
-      color: "#138808",
-    },
-    {
-      name: "Telangana",
-      d: "M195,365 L230,355 L265,365 L275,395 L260,420 L230,430 L210,420 L195,395 Z",
-      color: "#FF9933",
-    },
-    {
-      name: "Andhra Pradesh",
-      d: "M195,465 L210,445 L230,430 L260,420 L290,435 Q310,465 305,495 L280,520 L245,535 L210,530 L195,510 Q188,485 195,465 Z",
-      color: "#FFFFFF",
-    },
-  ];
-
   return (
     <svg
-      viewBox="0 0 520 680"
-      className="w-full h-full"
-      style={{ filter: "drop-shadow(0 0 40px rgba(255,255,255,0.03))" }}
+      viewBox="0 0 650 700"
+      className="w-full h-full drop-shadow-2xl"
+      style={{ filter: "drop-shadow(0 10px 30px rgba(0,0,0,0.2))" }}
     >
       <defs>
-        {/* Glow filter for hovered states */}
-        <filter id="stateGlow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+        {/* Enhanced Glow Effect */}
+        <filter id="hoverGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3" result="blur" />
+          <feColorMatrix
+            in="blur"
+            type="matrix"
+            values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0"
+            result="glow"
+          />
           <feMerge>
-            <feMergeNode in="coloredBlur" />
+            <feMergeNode in="glow" />
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
-        {/* Subtle inner shadow for depth */}
-        <filter id="innerShadow" x="-50%" y="-50%" width="200%" height="200%">
-          <feComponentTransfer in="SourceAlpha">
-            <feFuncA type="table" tableValues="1 0" />
-          </feComponentTransfer>
-          <feGaussianBlur stdDeviation="2" />
-          <feOffset dx="0" dy="1" result="offsetblur" />
-          <feFlood floodColor="rgba(0,0,0,0.3)" result="color" />
-          <feComposite in2="offsetblur" operator="in" />
-          <feComposite in2="SourceAlpha" operator="in" />
-          <feMerge>
-            <feMergeNode in="SourceGraphic" />
-            <feMergeNode />
-          </feMerge>
-        </filter>
+
+        {/* Subtle Texture/Gradient for the whole map */}
+        <linearGradient id="mapGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="rgba(255,255,255,0.1)" />
+          <stop offset="100%" stopColor="rgba(255,255,255,0.0)" />
+        </linearGradient>
       </defs>
 
-      {/* Background glow */}
-      <ellipse
-        cx="250"
-        cy="350"
-        rx="180"
-        ry="280"
-        fill="url(#indiaGradient)"
-        opacity="0.05"
-      />
+      {/* Background Aura */}
+      <circle cx="325" cy="350" r="250" fill="url(#mapGradient)" opacity="0.1" />
 
-      {/* Render all states */}
-      {states.map((state, index) => (
-        <motion.path
-          key={state.name}
-          d={state.d}
-          onMouseEnter={() => setHoveredState(state.name)}
-          onMouseLeave={() => setHoveredState(null)}
-          initial={{ opacity: 0, pathLength: 0 }}
-          animate={{
-            opacity: 1,
-            pathLength: 1,
-            fill:
-              hoveredState === state.name
-                ? state.color
-                : "rgba(255,255,255,0.04)",
-            stroke:
-              hoveredState === state.name
-                ? "rgba(255,255,255,0.9)"
-                : "rgba(255,255,255,0.15)",
-            strokeWidth: hoveredState === state.name ? 2.5 : 0.8,
-            filter: hoveredState === state.name ? "url(#stateGlow)" : "none",
-          }}
-          transition={{
-            opacity: { duration: 0.5, delay: index * 0.02 },
-            pathLength: { duration: 0.8, delay: index * 0.02 },
-            fill: { duration: 0.25, ease: "easeOut" },
-            stroke: { duration: 0.25, ease: "easeOut" },
-            strokeWidth: { duration: 0.2, ease: "easeOut" },
-            filter: { duration: 0.2 },
-          }}
-          style={{
-            cursor: "pointer",
-            fillOpacity: hoveredState === state.name ? 0.85 : 1,
-          }}
-          whileHover={{
-            scale: 1.015,
-            transition: { duration: 0.2, ease: "easeOut" },
-          }}
-        />
-      ))}
+      <g strokeLinecap="round" strokeLinejoin="round">
+        {MAP_DATA.map((state, i) => {
+          const isHovered = hoveredState === state.name;
 
-      {/* State name tooltip at bottom */}
-      <AnimatePresence mode="wait">
-        {hoveredState && (
-          <motion.g>
-            <motion.rect
-              initial={{ opacity: 0, scaleX: 0 }}
-              animate={{ opacity: 1, scaleX: 1 }}
-              exit={{ opacity: 0, scaleX: 0 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              x="160"
-              y="655"
-              width="200"
-              height="30"
-              rx="15"
-              fill="rgba(255,255,255,0.1)"
-              style={{ transformOrigin: "center" }}
+          return (
+            <motion.path
+              key={state.id}
+              d={state.d}
+              onMouseEnter={() => setHoveredState(state.name)}
+              onMouseLeave={() => setHoveredState(null)}
+
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                fill: isHovered ? state.color : "#2a2a2a", // Dark theme base
+                stroke: isHovered ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.2)",
+                strokeWidth: isHovered ? 2 : 0.5,
+                filter: isHovered ? "url(#hoverGlow)" : "none",
+                // Bring hovered element to front
+                zIndex: isHovered ? 10 : 1
+              }}
+              transition={{
+                duration: 0.3,
+                ease: "easeOut",
+                opacity: { delay: i * 0.015, duration: 0.5 }
+              }}
+              whileHover={{
+                scale: 1.02,
+                transition: { duration: 0.2 }
+              }}
+              style={{
+                cursor: "pointer",
+                outline: "none",
+                transformOrigin: "center"
+              }}
             />
-            <motion.text
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              transition={{ duration: 0.2, delay: 0.1 }}
-              x="260"
-              y="675"
-              textAnchor="middle"
-              fill="white"
-              fontSize="13"
-              fontWeight="600"
-              fontFamily="system-ui, -apple-system, sans-serif"
-            >
-              {hoveredState}
-            </motion.text>
-          </motion.g>
+          );
+        })}
+      </g>
+
+      {/* Internal Tooltip (optional, keeping it for direct context) */}
+      <AnimatePresence>
+        {hoveredState && (
+          <motion.foreignObject
+            x="225"
+            y="650"
+            width="200"
+            height="40"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="flex justify-center items-center h-full">
+              <div className="bg-white/10 backdrop-blur-md px-4 py-1 rounded-full border border-white/20">
+                <p className="text-white text-xs font-semibold tracking-wide">{hoveredState}</p>
+              </div>
+            </div>
+          </motion.foreignObject>
         )}
       </AnimatePresence>
     </svg>
   );
 }
 
-// --- Stat Card Component with smooth value transitions ---
+// --- Stat Card Component ---
 function StatCard({
   icon: Icon,
   label,
