@@ -6,19 +6,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import IndiaMap from "../../components/IndiaMap";
 
 const stateData: Record<string, any> = {
-  "Ladakh": {
-    schools: "110",
-    literacy: "74.3%",
-    poverty: "11%",
-    activeNGOs: 15,
-  },
+  Ladakh: { schools: "110", literacy: "74.3%", poverty: "11%", activeNGOs: 15 },
   "Andaman & Nicobar": {
     schools: "320",
     literacy: "86.3%",
     poverty: "1%",
     activeNGOs: 12,
   },
-  "Lakshadweep": {
+  Lakshadweep: {
     schools: "45",
     literacy: "91.8%",
     poverty: "2%",
@@ -36,12 +31,7 @@ const stateData: Record<string, any> = {
     poverty: "8%",
     activeNGOs: 28,
   },
-  Punjab: {
-    schools: "620",
-    literacy: "76.7%",
-    poverty: "8%",
-    activeNGOs: 45,
-  },
+  Punjab: { schools: "620", literacy: "76.7%", poverty: "8%", activeNGOs: 45 },
   Chandigarh: {
     schools: "85",
     literacy: "87.4%",
@@ -60,12 +50,7 @@ const stateData: Record<string, any> = {
     poverty: "11%",
     activeNGOs: 52,
   },
-  Delhi: {
-    schools: "320",
-    literacy: "86.2%",
-    poverty: "9%",
-    activeNGOs: 68,
-  },
+  Delhi: { schools: "320", literacy: "86.2%", poverty: "9%", activeNGOs: 68 },
   Rajasthan: {
     schools: "1.4k",
     literacy: "67.1%",
@@ -78,18 +63,8 @@ const stateData: Record<string, any> = {
     poverty: "37%",
     activeNGOs: 84,
   },
-  Bihar: {
-    schools: "850",
-    literacy: "61.8%",
-    poverty: "51%",
-    activeNGOs: 42,
-  },
-  Sikkim: {
-    schools: "120",
-    literacy: "82.2%",
-    poverty: "8%",
-    activeNGOs: 12,
-  },
+  Bihar: { schools: "850", literacy: "61.8%", poverty: "51%", activeNGOs: 42 },
+  Sikkim: { schools: "120", literacy: "82.2%", poverty: "8%", activeNGOs: 12 },
   "Arunachal Pradesh": {
     schools: "180",
     literacy: "66.9%",
@@ -126,12 +101,7 @@ const stateData: Record<string, any> = {
     poverty: "12%",
     activeNGOs: 24,
   },
-  Assam: {
-    schools: "520",
-    literacy: "73.2%",
-    poverty: "32%",
-    activeNGOs: 48,
-  },
+  Assam: { schools: "520", literacy: "73.2%", poverty: "32%", activeNGOs: 48 },
   "West Bengal": {
     schools: "980",
     literacy: "77.1%",
@@ -144,12 +114,7 @@ const stateData: Record<string, any> = {
     poverty: "37%",
     activeNGOs: 45,
   },
-  Odisha: {
-    schools: "780",
-    literacy: "73.5%",
-    poverty: "33%",
-    activeNGOs: 62,
-  },
+  Odisha: { schools: "780", literacy: "73.5%", poverty: "33%", activeNGOs: 62 },
   Chhattisgarh: {
     schools: "540",
     literacy: "71.0%",
@@ -180,24 +145,14 @@ const stateData: Record<string, any> = {
     poverty: "17%",
     activeNGOs: 120,
   },
-  Goa: {
-    schools: "85",
-    literacy: "87.4%",
-    poverty: "5%",
-    activeNGOs: 18,
-  },
+  Goa: { schools: "85", literacy: "87.4%", poverty: "5%", activeNGOs: 18 },
   Karnataka: {
     schools: "1.8k",
     literacy: "75.4%",
     poverty: "13%",
     activeNGOs: 95,
   },
-  Kerala: {
-    schools: "680",
-    literacy: "94.0%",
-    poverty: "7%",
-    activeNGOs: 85,
-  },
+  Kerala: { schools: "680", literacy: "94.0%", poverty: "7%", activeNGOs: 85 },
   "Tamil Nadu": {
     schools: "2.1k",
     literacy: "80.1%",
@@ -303,14 +258,15 @@ export default function LandingPage() {
                     Selected Region:
                   </span>
                 </div>
-                <AnimatePresence mode="wait">
+                {/* Changed mode to popLayout for snappier text updates here too */}
+                <AnimatePresence mode="popLayout">
                   <motion.span
                     key={hoveredState || "default"}
                     initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -5 }}
-                    transition={{ duration: 0.2 }}
-                    className="text-sm font-bold text-white"
+                    transition={{ duration: 0.15 }}
+                    className="text-sm font-bold text-white inline-block"
                   >
                     {hoveredState || "Hover on map"}
                   </motion.span>
@@ -318,9 +274,10 @@ export default function LandingPage() {
               </motion.div>
             </div>
 
+            {/* Changed animation from scale to y translation to prevent the instant zoom bug */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="flex-1 relative order-1 lg:order-2 w-full"
             >
@@ -368,14 +325,15 @@ function StatCard({
       <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-1">
         {label}
       </p>
-      <AnimatePresence mode="wait">
+      {/* Updated to popLayout and faster duration for seamless hover stat updates */}
+      <AnimatePresence mode="popLayout">
         <motion.p
           key={String(value)}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.2, ease: "easeOut" }}
-          className="text-2xl font-bold text-white"
+          transition={{ duration: 0.15, ease: "easeOut" }}
+          className="text-2xl font-bold text-white inline-block"
         >
           {value}
         </motion.p>
