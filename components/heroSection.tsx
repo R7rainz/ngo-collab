@@ -101,6 +101,27 @@ const budgetRanges = [
   "Above ₹5 Crores",
 ];
 
+// --- Staggered Entry Animation Variants ---
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
 export default function HeroSection() {
   const router = useRouter();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -134,7 +155,7 @@ export default function HeroSection() {
 
   const toggleFocusArea = (id: string) => {
     setSelectedFocusAreas((prev) =>
-      prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id],
     );
   };
 
@@ -156,7 +177,7 @@ export default function HeroSection() {
         <div className="absolute inset-0 z-0">
           <GodRays
             colorBack="#000000"
-            colors={["#FF9933", "#FFFFFF", "#138808"]}
+            colors={["#B35D2B", "#404040", "#004d00"]}
             intensity={0.4}
             speed={0.5}
             scale={1.5}
@@ -170,12 +191,17 @@ export default function HeroSection() {
           }}
           className="absolute z-0 pointer-events-none"
         >
-          <AshokaChakra size={900} color="#FFFFFF" />
+          <AshokaChakra size={900} color="#AAAAAA" />
         </motion.div>
-        <div className="relative z-10 flex flex-col items-center gap-8 text-center max-w-5xl mx-auto">
+
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="relative z-10 flex flex-col items-center gap-8 text-center max-w-5xl mx-auto"
+        >
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            variants={itemVariants}
             className="flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md"
           >
             <div className="flex gap-1">
@@ -187,14 +213,24 @@ export default function HeroSection() {
               National Social Portal
             </span>
           </motion.div>
-          <h1 className="text-6xl sm:text-8xl md:text-9xl font-bold tracking-tighter text-white">
+
+          <motion.h1
+            variants={itemVariants}
+            className="text-6xl sm:text-8xl md:text-9xl font-bold tracking-tighter text-white"
+          >
             Bridge the Gap
-          </h1>
-          <p className="text-lg sm:text-2xl text-white/40 font-light max-w-2xl leading-relaxed">
+          </motion.h1>
+
+          <motion.p
+            variants={itemVariants}
+            className="text-lg sm:text-2xl text-white/40 font-light max-w-2xl leading-relaxed"
+          >
             Intelligence for the growth of Bharat.
-          </p>
+          </motion.p>
+
           {!isExpanded && (
             <motion.button
+              variants={itemVariants}
               layoutId="modal"
               onClick={handleExpand}
               className="group h-16 px-10 rounded-full bg-white text-black font-bold text-xs uppercase tracking-widest flex items-center gap-4 mt-8"
@@ -202,7 +238,7 @@ export default function HeroSection() {
               Register Organization <ArrowRight className="w-5 h-5" />
             </motion.button>
           )}
-        </div>
+        </motion.div>
       </section>
 
       {/* Features Section */}
@@ -211,6 +247,7 @@ export default function HeroSection() {
           <h2 className="text-sm font-bold tracking-[0.3em] text-[#FF9933] uppercase mb-12">
             The Mission Framework
           </h2>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/10 rounded-3xl overflow-hidden border border-white/10">
             {[
               { icon: Database, title: "Real-Time Intelligence", step: "01" },
@@ -218,19 +255,23 @@ export default function HeroSection() {
               { icon: TrendingUp, title: "Impact Analysis", step: "03" },
               { icon: Users, title: "Strategic Network", step: "04" },
             ].map((f, i) => (
-              <div
+              <motion.div
                 key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
                 className="group bg-black p-12 hover:bg-white/[0.02] transition-colors relative"
               >
                 <span className="absolute top-8 right-8 text-4xl font-bold text-white/[0.03]">
                   {f.step}
                 </span>
-                <f.icon className="w-10 h-10 text-white/30 group-hover:text-[#FF9933] mb-6 transition-colors" />
+                <f.icon className="w-10 h-10 text-white/30 group-hover:text-[#B35D2B] mb-6 transition-colors" />
                 <h4 className="text-xl font-bold text-white mb-2">{f.title}</h4>
                 <p className="text-white/40 text-sm">
                   Access live metrics for granular national development.
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -263,7 +304,6 @@ export default function HeroSection() {
                     and connect with NGOs across India.
                   </p>
 
-                  {/* Progress Steps */}
                   <div className="mt-10 space-y-4">
                     {stepTitles.map((title, index) => (
                       <div key={index} className="flex items-center gap-3">
@@ -272,8 +312,8 @@ export default function HeroSection() {
                             currentStep > index + 1
                               ? "bg-[#138808] text-white"
                               : currentStep === index + 1
-                              ? "bg-white text-black"
-                              : "bg-white/10 text-white/30"
+                                ? "bg-white text-black"
+                                : "bg-white/10 text-white/30"
                           }`}
                         >
                           {currentStep > index + 1 ? (
@@ -471,8 +511,8 @@ export default function HeroSection() {
 
                           <div className="mt-4 p-4 rounded-2xl bg-[#138808]/10 border border-[#138808]/20">
                             <p className="text-sm text-white/70">
-                              By registering, you agree to join India&apos;s largest
-                              NGO intelligence network and contribute to
+                              By registering, you agree to join India&apos;s
+                              largest NGO intelligence network and contribute to
                               national development data.
                             </p>
                           </div>
@@ -596,7 +636,11 @@ function CustomSelect({
           {placeholder}
         </option>
         {options.map((option) => (
-          <option key={option} value={option} className="bg-[#0a0a0a] text-white">
+          <option
+            key={option}
+            value={option}
+            className="bg-[#0a0a0a] text-white"
+          >
             {option}
           </option>
         ))}
